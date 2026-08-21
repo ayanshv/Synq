@@ -95,7 +95,7 @@ def _render_start_again(flow: ui.element) -> None:
 
 
 def _show_editor(flow: ui.element, activities: list[WorkActivity]) -> None:
-    draft = ai_service.generate_draft(activities)
+    draft = ai_service.generate_work_summary(activities)
     flow.clear()
     with flow:
         _render_editor(flow, draft, activities)
