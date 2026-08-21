@@ -212,6 +212,24 @@ _THEME_CSS = """
 .synq-timeline-dot { width: 8px; height: 8px; margin-top: 7px; border: 2px solid var(--synq-accent); border-radius: 50%; background: var(--synq-surface); }
 .synq-timeline-copy { display: flex; flex-direction: column; gap: 6px; }
 .synq-timeline-copy .synq-body { font-size: 0.94rem; }
+.synq-work-flow { max-width: 760px; }
+.synq-work-status { display: flex; flex-direction: column; gap: 16px; }
+.synq-private-card { display: flex; flex-direction: column; gap: 16px; }
+.synq-private-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.synq-activity-list { gap: 0; }
+.synq-activity-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 17px 0; border-bottom: 1px solid var(--synq-border); }
+.synq-activity-row:last-child { border-bottom: 0; }
+.synq-activity-copy { display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.synq-activity-title { color: var(--synq-ink); font-size: 1rem; line-height: 1.45; }
+.synq-remove-button { color: var(--synq-ink-3); }
+.synq-remove-button:hover { color: var(--synq-error); }
+.synq-work-consent { display: flex; flex-direction: column; gap: 15px; padding: 8px 0; }
+.synq-review-notice { display: flex; flex-direction: column; gap: 5px; padding: 18px 20px; border-left: 3px solid var(--synq-accent); background: var(--synq-accent-soft); }
+.synq-review-notice-title { color: var(--synq-ink); font-weight: 600; }
+.synq-editor-card { display: flex; flex-direction: column; gap: 14px; }
+.synq-editor-field { width: 100%; }
+.synq-include-grid { display: flex; gap: 22px; flex-wrap: wrap; padding: 8px 0; border-top: 1px solid var(--synq-border); border-bottom: 1px solid var(--synq-border); }
+.synq-editor-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
 
 /* ---- Buttons ---- */
 .synq-btn {

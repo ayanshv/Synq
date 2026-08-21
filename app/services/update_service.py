@@ -21,6 +21,32 @@ def create_update(user_id: int, team_id: int, title: str = "") -> WorkUpdate:
         return update
 
 
+def save_update(
+    user_id: int,
+    team_id: int,
+    title: str,
+    summary: str,
+    accomplishments: str,
+    blockers: str,
+    published: bool = False,
+) -> WorkUpdate:
+    """Persist a reviewed update, keeping it private unless explicitly published."""
+    with get_session() as session:
+        update = WorkUpdate(
+            user_id=user_id,
+            team_id=team_id,
+            title=title,
+            summary=summary,
+            accomplishments=accomplishments,
+            blockers=blockers,
+            published=published,
+        )
+        session.add(update)
+        session.commit()
+        session.refresh(update)
+        return update
+
+
 def get_update(update_id: int) -> WorkUpdate | None:
     """Return a single update by id, or None if it does not exist."""
     with get_session() as session:
