@@ -29,3 +29,10 @@ class Goal(SQLModel, table=True):
     status: str = Field(default="on_track")
 
     created_at: datetime.datetime = Field(default_factory=_now)
+
+    @property
+    def progress(self) -> float:
+        """Return completion as a percentage for display."""
+        if self.target_value <= 0:
+            return 0.0
+        return min(100.0, max(0.0, self.current_value / self.target_value * 100))

@@ -168,6 +168,50 @@ _THEME_CSS = """
     background: var(--synq-accent-soft);
     border-color: rgba(74, 111, 165, 0.16);
 }
+.synq-user-menu { margin-left: 10px; }
+.synq-avatar {
+    width: 34px; height: 34px; min-height: 34px;
+    padding: 0; border-radius: 50%;
+    background: var(--synq-ink); color: #fffdfb;
+    font-size: 0.72rem; font-weight: 700;
+}
+.synq-avatar-small {
+    width: 38px; height: 38px; min-height: 38px;
+    display: inline-flex; align-items: center; justify-content: center;
+    flex-shrink: 0; background: var(--synq-accent-soft); color: var(--synq-accent);
+}
+.synq-dashboard-intro { display: flex; flex-direction: column; gap: 10px; padding: 18px 0 10px; }
+.synq-dashboard-section { display: flex; flex-direction: column; gap: 16px; }
+.synq-stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+.synq-dashboard-grid { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(300px, 0.8fr); gap: 42px; align-items: start; }
+.synq-dashboard-main, .synq-dashboard-side { display: flex; flex-direction: column; gap: 34px; min-width: 0; }
+.synq-goal-list, .synq-update-list { display: flex; flex-direction: column; gap: 24px; }
+.synq-goal-list { padding: 4px 24px; }
+.synq-goal-row { display: flex; flex-direction: column; gap: 11px; padding: 20px 0; border-bottom: 1px solid var(--synq-border); }
+.synq-goal-row:last-child { border-bottom: 0; }
+.synq-goal-heading, .synq-update-topline, .synq-meeting-title-row, .synq-timeline-heading {
+    display: flex; align-items: flex-start; justify-content: space-between; gap: 16px;
+}
+.synq-goal-title { font-size: 1.04rem; font-weight: 600; color: var(--synq-ink); }
+.synq-goal-meta { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.synq-goal-percent { font-family: 'Fraunces', Georgia, serif; font-size: 1.15rem; color: var(--synq-ink); }
+.synq-update-card { display: flex; flex-direction: column; gap: 16px; }
+.synq-person { display: flex; align-items: center; gap: 12px; }
+.synq-update-name, .synq-timeline-person { font-weight: 600; color: var(--synq-ink); }
+.synq-update-detail { display: flex; flex-direction: column; gap: 4px; padding-top: 13px; border-top: 1px solid var(--synq-border); }
+.synq-detail-label { font-size: 0.74rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: var(--synq-ink-3); }
+.synq-detail-text { font-size: 0.96rem; line-height: 1.5; color: var(--synq-ink-2); }
+.synq-update-detail.synq-blocker { border-top-color: rgba(192, 138, 62, 0.35); }
+.synq-update-detail.synq-blocker .synq-detail-label { color: var(--synq-warning); }
+.synq-meeting-card { display: flex; flex-direction: column; gap: 15px; padding: 24px; border: 1px solid rgba(91, 140, 106, 0.25); border-radius: var(--synq-radius); background: rgba(91, 140, 106, 0.07); }
+.synq-meeting-card.synq-meeting-alert { border-color: rgba(192, 138, 62, 0.3); background: rgba(192, 138, 62, 0.08); }
+.synq-meeting-title { font-family: 'Fraunces', Georgia, serif; font-size: 1.45rem; line-height: 1.15; color: var(--synq-ink); }
+.synq-timeline { display: flex; flex-direction: column; gap: 0; padding: 8px 22px; }
+.synq-timeline-item { display: grid; grid-template-columns: 14px 1fr; gap: 14px; padding: 18px 0; border-bottom: 1px solid var(--synq-border); }
+.synq-timeline-item:last-child { border-bottom: 0; }
+.synq-timeline-dot { width: 8px; height: 8px; margin-top: 7px; border: 2px solid var(--synq-accent); border-radius: 50%; background: var(--synq-surface); }
+.synq-timeline-copy { display: flex; flex-direction: column; gap: 6px; }
+.synq-timeline-copy .synq-body { font-size: 0.94rem; }
 
 /* ---- Buttons ---- */
 .synq-btn {
@@ -437,6 +481,7 @@ _THEME_CSS = """
 }
 @media (max-width: 860px) {
     .synq-preview-body { grid-template-columns: 1fr; }
+    .synq-dashboard-grid { grid-template-columns: 1fr; gap: 34px; }
 }
 @media (max-width: 640px) {
     .synq-nav { padding: 14px 0; }
@@ -447,6 +492,10 @@ _THEME_CSS = """
     .synq-hero { padding: 32px 0 24px 0; gap: 18px; }
     .synq-preview { padding: 10px; }
     .synq-preview-card { padding: 14px; }
+    .synq-stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .synq-goal-heading, .synq-update-topline, .synq-meeting-title-row { flex-direction: column; }
+    .synq-nav-links { justify-content: flex-end; }
+    .synq-user-menu { margin-left: 0; }
 }
 </style>
 """

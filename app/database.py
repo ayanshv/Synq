@@ -9,14 +9,14 @@ from sqlmodel import Session, SQLModel, create_engine
 
 from app.config import settings
 
-# `check_same_thread=False` lets NiceGUI's request handlers share the engine.
-# SQLite normally restricts connections to a single thread, but NiceGUI serves
-# requests across threads, so we relax that constraint for development.
-engine = create_engine(
-    settings.database_url,
-    echo=False,
-    connect_args={"check_same_thread": False},
+# `check_same_thread=False` lets NiceGUI's request handlers share a SQLite
+# engine. PostgreSQL does not accept that SQLite-only connection option.
+connect_args = (
+    {"check_same_thread": False}
+    if settings.database_url.startswith("sqlite")
+    else {}
 )
+engine = create_engine(settings.database_url, echo=False, connect_args=connect_args)
 
 
 def init_db() -> None:

@@ -72,7 +72,7 @@ def _updates_card() -> None:
 def _update_row(initials: str, name: str, text: str) -> None:
     with ui.element("div").classes("synq-preview-row"):
         with ui.element("div").classes("flex items-center gap-2"):
-            ui.element("span").classes("synq-preview-avatar").text(initials)
+            ui.label(initials).classes("synq-preview-avatar")
             with ui.element("div").classes("flex flex-col"):
                 ui.label(name).style("font-weight: 600; font-size: 0.88rem; color: var(--synq-ink);")
                 ui.label(text).style("font-size: 0.82rem; color: var(--synq-ink-2); max-width: 28ch;")

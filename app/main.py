@@ -32,5 +32,5 @@ def main() -> None:
     ui.run(title="Synq", port=8080)
 
 
-if __name__ == "__main__":
+if __name__ in {"__main__", "__mp_main__"}:
     main()

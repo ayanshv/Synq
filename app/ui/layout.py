@@ -24,9 +24,8 @@ from app.ui.theme import apply_theme
 # Navigation items shared across every page. Keeping them here means a new
 # page automatically gets the right nav without re-listing links.
 _NAV_ITEMS = [
-    ("Home", "/"),
     ("Dashboard", "/dashboard"),
-    ("Review", "/review"),
+    ("My Work", "/review"),
     ("Goals", "/goals"),
     ("Settings", "/settings"),
 ]
@@ -55,7 +54,7 @@ def page_frame(title: str, active_path: Optional[str] = None):
 
 
 def _render_nav(active_path: Optional[str]) -> None:
-    """Render the top navigation bar with pill-shaped links."""
+    """Render the top navigation bar with links and the current user menu."""
     with ui.element("nav").classes("synq-nav"):
         # Brand mark: "Synq" with a small accent dot.
         ui.html('<a class="synq-nav-brand" href="/">Synq<span class="synq-nav-dot"></span></a>')
@@ -65,6 +64,12 @@ def _render_nav(active_path: Optional[str]) -> None:
                 if active_path == path:
                     classes += " synq-active"
                 ui.link(label, path).classes(classes)
+            with ui.element("div").classes("synq-user-menu"):
+                with ui.button("AK").props("flat round").classes("synq-avatar"):
+                    with ui.menu().classes("synq-menu"):
+                        ui.menu_item("Anya Kapoor")
+                        ui.separator()
+                        ui.menu_item("Profile", on_click=lambda: ui.navigate.to("/settings"))
 
 
 # ---- Typography helpers ----
@@ -175,7 +180,7 @@ def stat_card(value: str, label: str, hint: Optional[str] = None) -> ui.element:
 def badge(text: str, variant: str = "neutral") -> ui.element:
     """Small pill-shaped badge. variant: neutral|accent|success|warning."""
     classes = f"synq-badge synq-badge-{variant}"
-    return ui.element("span").classes(classes).text(text)
+    return ui.label(text).classes(classes)
 
 
 # ---- Divider ----
