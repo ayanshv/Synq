@@ -230,6 +230,20 @@ _THEME_CSS = """
 .synq-editor-field { width: 100%; }
 .synq-include-grid { display: flex; gap: 22px; flex-wrap: wrap; padding: 8px 0; border-top: 1px solid var(--synq-border); border-bottom: 1px solid var(--synq-border); }
 .synq-editor-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.synq-goals-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; }
+.synq-goal-card { display: flex; flex-direction: column; gap: 24px; }
+.synq-goal-card-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; }
+.synq-goal-card-copy { display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.synq-goal-card-title { font-family: 'Fraunces', Georgia, serif; font-size: 1.5rem; line-height: 1.18; color: var(--synq-ink); }
+.synq-goal-card-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+.synq-goal-edit { color: var(--synq-ink-3); }
+.synq-goal-progress-block { display: flex; flex-direction: column; gap: 10px; }
+.synq-goal-progress-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; }
+.synq-goal-progress-value { font-family: 'Fraunces', Georgia, serif; font-size: 2.4rem; line-height: 1; color: var(--synq-ink); }
+.synq-goal-progress-track { height: 9px; border-radius: 999px; overflow: hidden; }
+.synq-goal-details { display: flex; gap: 18px; flex-wrap: wrap; padding-top: 15px; border-top: 1px solid var(--synq-border); }
+.synq-goal-form { display: flex; flex-direction: column; gap: 14px; max-width: 720px; }
+.synq-goal-dialog { width: min(560px, calc(100vw - 32px)); display: flex; flex-direction: column; gap: 14px; padding: 28px; }
 
 /* ---- Buttons ---- */
 .synq-btn {
@@ -514,6 +528,8 @@ _THEME_CSS = """
     .synq-goal-heading, .synq-update-topline, .synq-meeting-title-row { flex-direction: column; }
     .synq-nav-links { justify-content: flex-end; }
     .synq-user-menu { margin-left: 0; }
+    .synq-goals-list { grid-template-columns: 1fr; }
+    .synq-goal-card-top { flex-direction: column; }
 }
 </style>
 """

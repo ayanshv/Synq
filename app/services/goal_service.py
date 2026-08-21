@@ -53,3 +53,25 @@ def update_progress(goal_id: int, current_value: float) -> Goal | None:
         session.commit()
         session.refresh(goal)
         return goal
+
+
+def update_goal(
+    goal_id: int,
+    title: str,
+    description: str,
+    current_value: float,
+    status: str,
+) -> Goal | None:
+    """Update the small set of fields the strategy view owns."""
+    with get_session() as session:
+        goal = session.get(Goal, goal_id)
+        if goal is None:
+            return None
+        goal.title = title.strip()
+        goal.description = description.strip()
+        goal.current_value = max(0.0, min(goal.target_value, current_value))
+        goal.status = status
+        session.add(goal)
+        session.commit()
+        session.refresh(goal)
+        return goal
