@@ -49,11 +49,10 @@ def _team_progress(data: DashboardData) -> None:
             stat_card(str(data.updates_this_week), "Updates this week")
             stat_card(str(data.active_goals), "Active goals")
             stat_card(str(data.completed_goals), "Completed goals")
-            recommendation = data.recommendation
             stat_card(
-                "Meet" if recommendation and recommendation.recommendation == "meet" else "Async",
+                "Meet" if data.recommendation.recommendation == "Meeting recommended" else "Async",
                 "Meeting recommendation",
-                "Based on the latest team check",
+                f"{data.recommendation.confidence:.0%} confidence",
             )
 
 
@@ -112,27 +111,21 @@ def _detail(label: str, text: str, extra_class: str = "") -> None:
 
 def _meeting_recommendation(data: DashboardData) -> None:
     recommendation = data.recommendation
-    needs_meeting = recommendation and recommendation.recommendation == "meet"
-    title = "Meeting recommended." if needs_meeting else "No meeting recommended."
-    reason = (
-        recommendation.reason
-        if recommendation and recommendation.reason
-        else (
-            "There are unresolved blockers or goals that need synchronous discussion."
-            if needs_meeting
-            else "All active work has recent updates and there are no unresolved blockers requiring synchronous discussion."
-        )
-    )
+    needs_meeting = recommendation.recommendation == "Meeting recommended"
     with ui.element("section").classes("synq-dashboard-section"):
         section_heading("Meeting recommendation")
         with ui.element("div").classes(
             "synq-meeting-card synq-meeting-alert" if needs_meeting else "synq-meeting-card"
         ):
             with ui.element("div").classes("synq-meeting-title-row"):
-                ui.label(title).classes("synq-meeting-title")
+                ui.label(recommendation.recommendation).classes("synq-meeting-title")
                 badge("Discuss together" if needs_meeting else "Async is enough",
                       "warning" if needs_meeting else "success")
-            body(reason)
+            body(recommendation.reason)
+            muted(
+                f"Assistant suggestion · {recommendation.confidence:.0%} confidence. "
+                "Your team decides what to do."
+            )
 
 
 def _activity_timeline(data: DashboardData) -> None:

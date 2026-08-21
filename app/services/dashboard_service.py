@@ -12,11 +12,12 @@ from sqlmodel import select
 from app.database import get_session
 from app.models import (
     Goal,
-    MeetingRecommendation,
+    Team,
     User,
     WorkActivity,
     WorkUpdate,
 )
+from app.services.meeting_service import MeetingSuggestion, recommend_meeting
 
 
 @dataclass
@@ -41,7 +42,7 @@ class DashboardData:
     updates: list[DashboardUpdate]
     goals: list[Goal]
     activities: list[DashboardActivity]
-    recommendation: MeetingRecommendation | None
+    recommendation: MeetingSuggestion
     updates_this_week: int
     active_goals: int
     completed_goals: int
@@ -67,17 +68,11 @@ def get_dashboard_data(team_id: int) -> DashboardData:
             .where(WorkActivity.user_id.in_(list(names)))
             .order_by(WorkActivity.date.desc(), WorkActivity.created_at.desc())
         ).all()
-        recommendation = session.exec(
-            select(MeetingRecommendation)
-            .where(MeetingRecommendation.team_id == team_id)
-            .order_by(
-                MeetingRecommendation.date.desc(),
-                MeetingRecommendation.created_at.desc(),
-            )
-        ).first()
-
         week_start = date.today() - timedelta(days=date.today().weekday())
         completed = [goal for goal in goals if goal.progress >= 100 or goal.status == "completed"]
+        team = session.get(Team, team_id)
+        if team is None:
+            raise ValueError(f"Team {team_id} does not exist.")
         return DashboardData(
             updates=[
                 DashboardUpdate(
@@ -99,7 +94,7 @@ def get_dashboard_data(team_id: int) -> DashboardData:
                 )
                 for activity in activities
             ],
-            recommendation=recommendation,
+            recommendation=recommend_meeting(team),
             updates_this_week=sum(update.date >= week_start for update in updates),
             active_goals=len(goals) - len(completed),
             completed_goals=len(completed),
