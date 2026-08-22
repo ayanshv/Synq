@@ -307,12 +307,14 @@ _THEME_CSS = """
     line-height: 1;
 }
 .synq-btn:active { transform: translateY(0); }
-.synq-btn-primary {
-    background: var(--synq-accent);
-    color: #fffdfb;
+.synq-btn-primary,
+.synq-btn-primary.bg-primary {
+    background: var(--synq-accent) !important;
+    color: #fffdfb !important;
 }
-.synq-btn-primary:hover {
-    background: var(--synq-accent-strong);
+.synq-btn-primary:hover,
+.synq-btn-primary.bg-primary:hover {
+    background: var(--synq-accent-strong) !important;
     transform: translateY(-1px);
     box-shadow: var(--synq-shadow-sm);
 }
@@ -326,12 +328,14 @@ _THEME_CSS = """
     border-color: var(--synq-ink-3);
     transform: translateY(-1px);
 }
-.synq-btn-accent {
-    background: var(--synq-accent);
-    color: #fff;
+.synq-btn-accent,
+.synq-btn-accent.bg-primary {
+    background: var(--synq-accent) !important;
+    color: #fff !important;
 }
-.synq-btn-accent:hover {
-    background: var(--synq-accent-strong);
+.synq-btn-accent:hover,
+.synq-btn-accent.bg-primary:hover {
+    background: var(--synq-accent-strong) !important;
     transform: translateY(-1px);
     box-shadow: var(--synq-shadow-sm);
 }
