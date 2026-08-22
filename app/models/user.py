@@ -1,9 +1,7 @@
 """User model.
 
-A User is a single person who belongs to a Team. In the MVP, users are
-created without authentication; the model stores a name, email, and role so
-published updates can be attributed to a person and permissions can vary
-later.
+A User is a single person who belongs to a Team. The MVP stores a name,
+email, role, and the onboarding answers used to personalize the workspace.
 """
 
 import datetime
@@ -22,4 +20,10 @@ class User(SQLModel, table=True):
     email: str = Field(unique=True, index=True)
     # "member" or "lead" - kept as a plain string for MVP simplicity.
     role: str = Field(default="member")
+    # What the person works on, captured during onboarding.
+    work_focus: str = Field(default="")
+    # JSON array of tool ids the person said they use, e.g. ["github","gmail"].
+    tools_json: str = Field(default="[]")
+    # JSON object for sharing / AI-analysis preferences.
+    settings_json: str = Field(default="{}")
     created_at: datetime.datetime = Field(default_factory=_now)

@@ -8,6 +8,7 @@ recommendation.
 
 from nicegui import ui
 
+from app.services.session_service import get_local_session_or_none
 from app.ui.layout import (
     page_frame, display_heading, eyebrow, body_large,
     primary_button, secondary_button, badge, divider,
@@ -15,13 +16,14 @@ from app.ui.layout import (
 
 
 def render() -> None:
-    with page_frame("Home", active_path="/"):
+    with page_frame("Home", active_path="/", public=True):
         _hero()
         _product_preview()
 
 
 def _hero() -> None:
     """Oversized centered hero with the headline, subheadline, and CTAs."""
+    signed_in = get_local_session_or_none() is not None
     with ui.element("section").classes("synq-hero"):
         eyebrow("Async updates for software teams")
         display_heading("Fewer meetings. Better work.")
@@ -30,18 +32,19 @@ def _hero() -> None:
             "clear async updates, shared goals, and meetings that actually matter."
         )
         with ui.element("div").classes("synq-hero-cta"):
-            primary_button("Try the workspace", on_click=lambda: ui.navigate.to("/dashboard"))
-            secondary_button("See how it works", on_click=lambda: ui.navigate.to("/review"))
+            if signed_in:
+                primary_button("Open workspace", on_click=lambda: ui.navigate.to("/dashboard"))
+            else:
+                primary_button("Get started", on_click=lambda: ui.navigate.to("/onboarding"))
+            secondary_button("See how it works", on_click=lambda: ui.navigate.to("/review" if signed_in else "/onboarding"))
 
 
 def _product_preview() -> None:
-    """Fake visual preview of the Synq dashboard below the hero.
+    """Visual preview of the Synq dashboard below the hero.
 
-    Purely visual - no real data. Shows the shape of the product so visitors
-    immediately understand what they're signing up for.
+    Illustrative product chrome only — not live workspace data.
     """
     with ui.element("div").classes("synq-preview"):
-        # Faux browser bar
         with ui.element("div").classes("synq-preview-bar"):
             ui.element("span").classes("synq-preview-dot")
             ui.element("span").classes("synq-preview-dot")
@@ -49,30 +52,26 @@ def _product_preview() -> None:
             ui.label("synq.app/dashboard").classes("synq-muted").style("margin-left: 8px; font-size: 0.82rem;")
 
         with ui.element("div").classes("synq-preview-body"):
-            # Left column: recent updates
             with ui.element("div").classes("synq-preview-col"):
                 _updates_card()
-
-            # Right column: goals + meeting recommendation
             with ui.element("div").classes("synq-preview-col"):
                 _goals_card()
                 _meeting_card()
 
 
 def _updates_card() -> None:
-    """Recent published updates from the team."""
     with ui.element("div").classes("synq-preview-card"):
         ui.label("Recent updates").classes("synq-preview-card-title")
         divider()
-        _update_row("AK", "Anya K.", "Shipped onboarding redesign. Fixed three auth bugs.")
-        _update_row("JD", "Jordan D.", "Reviewed pull requests. Blocked on API rate limit.")
-        _update_row("ML", "Mira L.", "Wrote integration tests for billing flow.")
+        _update_row("You", "You", "Shipped the change you reviewed this afternoon.")
+        _update_row("TM", "Teammate", "Closed the issue that was blocking launch.")
+        _update_row("TL", "Team lead", "Set the goal for the next two weeks.")
 
 
 def _update_row(initials: str, name: str, text: str) -> None:
     with ui.element("div").classes("synq-preview-row"):
         with ui.element("div").classes("flex items-center gap-2"):
-            ui.label(initials).classes("synq-preview-avatar")
+            ui.label(initials[:2]).classes("synq-preview-avatar")
             with ui.element("div").classes("flex flex-col"):
                 ui.label(name).style("font-weight: 600; font-size: 0.88rem; color: var(--synq-ink);")
                 ui.label(text).style("font-size: 0.82rem; color: var(--synq-ink-2); max-width: 28ch;")
@@ -80,13 +79,12 @@ def _update_row(initials: str, name: str, text: str) -> None:
 
 
 def _goals_card() -> None:
-    """Team goals with progress bars."""
     with ui.element("div").classes("synq-preview-card"):
         ui.label("Team goals").classes("synq-preview-card-title")
         divider()
-        _goal_row("Ship v1 launch", 78)
-        _goal_row("Reduce meeting load", 45)
-        _goal_row("Improve test coverage", 62)
+        _goal_row("Ship the current milestone", 0)
+        _goal_row("Keep meetings optional", 0)
+        _goal_row("Publish updates daily", 0)
 
 
 def _goal_row(title: str, progress: int) -> None:
@@ -100,11 +98,10 @@ def _goal_row(title: str, progress: int) -> None:
 
 
 def _meeting_card() -> None:
-    """Meeting recommendation nudge."""
     with ui.element("div").classes("synq-preview-meeting"):
         with ui.element("div").classes("synq-preview-row"):
             ui.label("Meeting check").classes("synq-preview-card-title")
             badge("Async is enough", variant="success")
         ui.label(
-            "Team is on track. No blockers reported. Skip the standup and keep building."
+            "Start with published updates. Synq will recommend a meeting only when blockers or stalled goals show up."
         ).style("font-size: 0.84rem; color: var(--synq-ink-2); line-height: 1.5;")

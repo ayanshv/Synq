@@ -7,7 +7,7 @@ and the shared layout/theme owns the visual language.
 from nicegui import ui
 
 from app.services.dashboard_service import DashboardData, get_dashboard_data
-from app.services.session_service import get_local_session
+from app.services.session_service import get_local_session_or_none
 from app.ui.layout import (
     badge,
     body,
@@ -21,10 +21,13 @@ from app.ui.layout import (
 )
 
 def render() -> None:
-    local_session = get_local_session()
+    local_session = get_local_session_or_none()
+    if local_session is None:
+        ui.navigate.to("/onboarding")
+        return
     data = get_dashboard_data(local_session.team_id)
     with page_frame("Dashboard", active_path="/dashboard"):
-        _intro()
+        _intro(local_session)
         _team_progress(data)
         with ui.element("div").classes("synq-dashboard-grid"):
             with ui.element("div").classes("synq-dashboard-main"):
@@ -35,10 +38,11 @@ def render() -> None:
                 _activity_timeline(data)
 
 
-def _intro() -> None:
+def _intro(local_session) -> None:
+    first = local_session.user_name.split()[0] if local_session.user_name.strip() else "there"
     with ui.element("div").classes("synq-dashboard-intro"):
-        h1("Good morning, team.")
-        body("Here's where the work stands.")
+        h1(f"Hello, {first}.")
+        body(f"{local_session.team_name} — here's where the work stands.")
 
 
 def _team_progress(data: DashboardData) -> None:
@@ -142,7 +146,7 @@ def _activity_timeline(data: DashboardData) -> None:
                             ui.label(activity.person).classes("synq-timeline-person")
                             muted(activity.date.strftime("%b %-d"))
                         body(activity.description)
-                        muted(activity.source.title())
+                        muted("Published update" if activity.source == "update" else activity.source.title())
 
 
 def _initials(name: str) -> str:

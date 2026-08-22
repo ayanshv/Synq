@@ -14,7 +14,6 @@ from app.models import (
     Goal,
     Team,
     User,
-    WorkActivity,
     WorkUpdate,
 )
 from app.services.meeting_service import MeetingSuggestion, recommend_meeting
@@ -64,11 +63,7 @@ def get_dashboard_data(team_id: int) -> DashboardData:
         goals = session.exec(
             select(Goal).where(Goal.team_id == team_id).order_by(Goal.created_at)
         ).all()
-        activities = session.exec(
-            select(WorkActivity)
-            .where(WorkActivity.user_id.in_(list(names)))
-            .order_by(WorkActivity.date.desc(), WorkActivity.created_at.desc())
-        ).all()
+        # Team timeline uses published updates only. Raw activity stays private.
         today = local_today()
         week_start = today - timedelta(days=today.weekday())
         completed = [goal for goal in goals if goal.progress >= 100 or goal.status == "completed"]
@@ -89,12 +84,12 @@ def get_dashboard_data(team_id: int) -> DashboardData:
             goals=list(goals),
             activities=[
                 DashboardActivity(
-                    person=names.get(activity.user_id, "Team member"),
-                    date=activity.date,
-                    description=activity.description,
-                    source=activity.source,
+                    person=names.get(update.user_id, "Team member"),
+                    date=update.date,
+                    description=update.title or update.summary,
+                    source="update",
                 )
-                for activity in activities
+                for update in updates[:12]
             ],
             recommendation=recommend_meeting(team),
             updates_this_week=sum(update.date >= week_start for update in updates),

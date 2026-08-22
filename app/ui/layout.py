@@ -4,13 +4,6 @@ This module is the single entry point pages use to render consistent UI.
 Every visual decision (colors, type, spacing, radius) lives in `theme.py`;
 this file exposes small Python helpers that apply those classes so page
 code stays declarative and readable.
-
-Usage:
-    with page_frame("Dashboard"):
-        section_heading("Recent updates", "Published by your team")
-        with rounded_card():
-            ui.label("Hello")
-        primary_button("Publish", on_click=publish)
 """
 
 from __future__ import annotations
@@ -19,7 +12,7 @@ from typing import Callable, Optional
 
 from nicegui import ui
 
-from app.services.session_service import get_local_session
+from app.services.session_service import LocalSession, clear_current_user, get_local_session_or_none
 from app.ui.theme import apply_theme
 
 # Navigation items shared across every page. Keeping them here means a new
@@ -32,7 +25,7 @@ _NAV_ITEMS = [
 ]
 
 
-def page_frame(title: str, active_path: Optional[str] = None):
+def page_frame(title: str, active_path: Optional[str] = None, public: bool = False):
     """Wrap page content in the shared page background, nav, and container.
 
     Returns a context manager; the caller fills it with page-specific
@@ -41,42 +34,55 @@ def page_frame(title: str, active_path: Optional[str] = None):
     """
     apply_theme()
     ui.page_title(f"Synq - {title}")
-
-    # Page background spans the full viewport.
-    ui.add_body_html('<div class="synq-page">')
+    session = get_local_session_or_none()
+    if not public and session is None:
+        ui.navigate.to("/onboarding")
 
     with ui.element("div").classes("synq-page w-full"):
         with ui.element("div").classes("synq-container"):
-            _render_nav(active_path)
-            # Content column the caller fills.
+            _render_nav(active_path, session)
             return ui.element("div").classes("synq-content")
 
-    # Closing tag for the background wrapper is handled by NiceGUI's DOM.
 
-
-def _render_nav(active_path: Optional[str]) -> None:
+def _render_nav(active_path: Optional[str], session: Optional[LocalSession]) -> None:
     """Render the top navigation bar with links and the current user menu."""
-    local_session = get_local_session()
     with ui.element("nav").classes("synq-nav"):
-        # Brand mark: "Synq" with a small accent dot.
         ui.html('<a class="synq-nav-brand" href="/">Synq<span class="synq-nav-dot"></span></a>')
         with ui.element("div").classes("synq-nav-links"):
+            if session is None:
+                ui.link("Home", "/").classes(
+                    "synq-nav-pill synq-active" if active_path == "/" else "synq-nav-pill"
+                )
+                ui.link("Get started", "/onboarding").classes(
+                    "synq-nav-pill synq-active" if active_path == "/onboarding" else "synq-nav-pill"
+                )
+                return
             for label, path in _NAV_ITEMS:
                 classes = "synq-nav-pill"
                 if active_path == path:
                     classes += " synq-active"
                 ui.link(label, path).classes(classes)
             with ui.element("div").classes("synq-user-menu"):
-                with ui.button(_initials(local_session.user_name)).props("flat round").classes("synq-avatar"):
+                with ui.button(_initials(session.user_name)).props("flat round").classes("synq-avatar"):
                     with ui.menu().classes("synq-menu"):
-                        ui.menu_item(local_session.user_name)
+                        ui.menu_item(session.user_name)
+                        ui.menu_item(session.team_name)
                         ui.separator()
-                        ui.menu_item("Profile", on_click=lambda: ui.navigate.to("/settings"))
+                        ui.menu_item("Settings", on_click=lambda: ui.navigate.to("/settings"))
+                        ui.menu_item("Sign out", on_click=_sign_out)
+
+
+def _sign_out() -> None:
+    clear_current_user()
+    ui.navigate.to("/")
 
 
 def _initials(name: str) -> str:
     """Return a compact avatar label for the local development user."""
-    return "".join(part[0] for part in name.split()[:2]).upper()
+    parts = [part for part in name.split() if part]
+    if not parts:
+        return "S"
+    return "".join(part[0] for part in parts[:2]).upper()
 
 
 # ---- Typography helpers ----

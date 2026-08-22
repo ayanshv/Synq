@@ -1,21 +1,19 @@
 """GitHub integration boundary.
 
-There is deliberately no GitHub API call here yet. The adapter currently
-returns the GitHub slice of the offline mock data, so the rest of the app can
-already depend on the future integration shape.
+OAuth is not wired yet. The adapter keeps a stable shape so the rest of the
+app can call it, and it returns no records until a real connection exists.
+Users log GitHub work themselves from My Work.
 """
 
 from app.models.work_activity import WorkActivity
 from app.services.integrations.base import Integration
-from app.services.integrations.mock import MockIntegration
 
 
 class GitHubIntegration(Integration):
     source = "github"
 
     def fetch_activities(self, user_id: int) -> list[WorkActivity]:
-        # TODO: Replace this mock with authenticated GitHub API requests.
-        return MockIntegration().fetch_activities(user_id, sources={"github"})
+        return []
 
 
 def fetch_activities(user_id: int) -> list[WorkActivity]:

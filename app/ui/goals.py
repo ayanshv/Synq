@@ -4,7 +4,7 @@ from nicegui import ui
 
 from app.models.goal import Goal
 from app.services import goal_service
-from app.services.session_service import get_local_session
+from app.services.session_service import get_local_session, get_local_session_or_none
 from app.ui.layout import (
     badge,
     body,
@@ -18,7 +18,10 @@ from app.ui.layout import (
 )
 
 def render() -> None:
-    local_session = get_local_session()
+    local_session = get_local_session_or_none()
+    if local_session is None:
+        ui.navigate.to("/onboarding")
+        return
     with page_frame("Goals", active_path="/goals"):
         h1("What are we moving toward?")
         body("A shared view of progress, without turning the work into a project plan.")

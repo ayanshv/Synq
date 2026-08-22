@@ -6,9 +6,11 @@ Starts the NiceGUI server and registers each page route. Pages live in the
 
 from nicegui import ui
 
+from app.config import settings
 from app.database import init_db
 from app.seed import run_seed
-from app.ui import landing, dashboard, review, goals, settings as settings_page
+from app.ui import dashboard, goals, join, landing, onboarding, review
+from app.ui import settings as settings_page
 
 
 def init_pages() -> None:
@@ -18,6 +20,8 @@ def init_pages() -> None:
     We wrap them in lambdas so NiceGUI calls them when the route is visited.
     """
     ui.page("/")(landing.render)
+    ui.page("/onboarding")(onboarding.render)
+    ui.page("/join/{code}")(join.render)
     ui.page("/dashboard")(dashboard.render)
     ui.page("/review")(review.render)
     ui.page("/goals")(goals.render)
@@ -29,7 +33,7 @@ def main() -> None:
     init_db()
     run_seed()
     init_pages()
-    ui.run(title="Synq", port=8080)
+    ui.run(title="Synq", port=8080, storage_secret=settings.storage_secret)
 
 
 if __name__ in {"__main__", "__mp_main__"}:

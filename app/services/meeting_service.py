@@ -58,6 +58,14 @@ def recommend_meeting(team: Team) -> MeetingSuggestion:
         )
         goals = list(session.exec(select(Goal).where(Goal.team_id == team.id)))
 
+    if not updates:
+        return MeetingSuggestion(
+            "No meeting needed",
+            "Your team is just getting started. Publish async updates first; "
+            "Synq will flag a meeting when blockers or stalled goals appear.",
+            0.72,
+        )
+
     recent_start = local_today() - timedelta(days=7)
     recent_updates = [update for update in updates if update.date >= recent_start]
     recent_members = {update.user_id for update in recent_updates}

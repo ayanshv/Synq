@@ -9,11 +9,9 @@ To add another source later:
 from app.services.integrations.base import Integration
 from app.services.integrations.github import GitHubIntegration
 from app.services.integrations.gmail import GmailIntegration
-from app.services.integrations.mock import MockIntegration
 
 __all__ = [
     "Integration",
     "GitHubIntegration",
     "GmailIntegration",
-    "MockIntegration",
 ]

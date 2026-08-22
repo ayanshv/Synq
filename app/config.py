@@ -27,8 +27,16 @@ class Settings:
     # SQLite path for development. Defaults to a file next to the project root.
     database_url: str = os.getenv("DATABASE_URL", "sqlite:///./synq.db")
 
-    # Placeholder for future AI integration. Empty string means "not configured".
+    # AI provider credentials. Empty string means "not configured".
+    # The rest of the app never reads these names; only ai_service does.
     gemini_api_key: str = os.getenv("GEMINI_API_KEY", "")
+    gemini_model: str = os.getenv("GEMINI_MODEL", "gemini-2.0-flash")
+
+    # Public origin used to build team invite links.
+    app_base_url: str = os.getenv("APP_BASE_URL", "http://localhost:8080").rstrip("/")
+
+    # Signs NiceGUI browser storage (the current user id). Not an AI secret.
+    storage_secret: str = os.getenv("STORAGE_SECRET", "synq-local-dev-storage")
 
     # Placeholder for future OAuth integrations.
     github_client_id: str = os.getenv("GITHUB_CLIENT_ID", "")
