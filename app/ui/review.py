@@ -4,6 +4,7 @@ from nicegui import ui
 
 from app.models.work_activity import WorkActivity
 from app.services import ai_service, update_service, work_service
+from app.services.session_service import get_local_session
 from app.ui.layout import (
     accent_button,
     accent_panel,
@@ -20,10 +21,6 @@ from app.ui.layout import (
     secondary_button,
     section_heading,
 )
-
-_TEAM_ID = 1
-_USER_ID = 1
-
 
 def render() -> None:
     with page_frame("My Work", active_path="/review"):
@@ -44,7 +41,8 @@ def _render_start(flow: ui.element) -> None:
 
 
 def _show_activity_summary(flow: ui.element) -> None:
-    activities = work_service.list_today_for_user(_USER_ID)
+    local_session = get_local_session()
+    activities = work_service.list_today_for_user(local_session.user_id)
     flow.clear()
     with flow:
         _render_private_summary(flow, activities)
@@ -185,9 +183,10 @@ def _persist(
     blockers_enabled,
     publish: bool,
 ) -> None:
+    local_session = get_local_session()
     update_service.save_update(
-        user_id=_USER_ID,
-        team_id=_TEAM_ID,
+        user_id=local_session.user_id,
+        team_id=local_session.team_id,
         title=title_input.value or "",
         summary=summary_input.value or "" if summary_enabled.value else "",
         accomplishments=(

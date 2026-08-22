@@ -19,6 +19,7 @@ from typing import Callable, Optional
 
 from nicegui import ui
 
+from app.services.session_service import get_local_session
 from app.ui.theme import apply_theme
 
 # Navigation items shared across every page. Keeping them here means a new
@@ -55,6 +56,7 @@ def page_frame(title: str, active_path: Optional[str] = None):
 
 def _render_nav(active_path: Optional[str]) -> None:
     """Render the top navigation bar with links and the current user menu."""
+    local_session = get_local_session()
     with ui.element("nav").classes("synq-nav"):
         # Brand mark: "Synq" with a small accent dot.
         ui.html('<a class="synq-nav-brand" href="/">Synq<span class="synq-nav-dot"></span></a>')
@@ -65,11 +67,16 @@ def _render_nav(active_path: Optional[str]) -> None:
                     classes += " synq-active"
                 ui.link(label, path).classes(classes)
             with ui.element("div").classes("synq-user-menu"):
-                with ui.button("AK").props("flat round").classes("synq-avatar"):
+                with ui.button(_initials(local_session.user_name)).props("flat round").classes("synq-avatar"):
                     with ui.menu().classes("synq-menu"):
-                        ui.menu_item("Anya Kapoor")
+                        ui.menu_item(local_session.user_name)
                         ui.separator()
                         ui.menu_item("Profile", on_click=lambda: ui.navigate.to("/settings"))
+
+
+def _initials(name: str) -> str:
+    """Return a compact avatar label for the local development user."""
+    return "".join(part[0] for part in name.split()[:2]).upper()
 
 
 # ---- Typography helpers ----

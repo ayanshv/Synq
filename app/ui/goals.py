@@ -4,6 +4,7 @@ from nicegui import ui
 
 from app.models.goal import Goal
 from app.services import goal_service
+from app.services.session_service import get_local_session
 from app.ui.layout import (
     badge,
     body,
@@ -16,15 +17,13 @@ from app.ui.layout import (
     section_heading,
 )
 
-_TEAM_ID = 1
-
-
 def render() -> None:
+    local_session = get_local_session()
     with page_frame("Goals", active_path="/goals"):
         h1("What are we moving toward?")
         body("A shared view of progress, without turning the work into a project plan.")
 
-        goals = goal_service.list_goals_for_team(_TEAM_ID)
+        goals = goal_service.list_goals_for_team(local_session.team_id)
         if goals:
             with ui.element("div").classes("synq-goals-list"):
                 for goal in goals:
@@ -86,8 +85,9 @@ def _create_goal(title_input, description_input, target_input) -> None:
         ui.notify("Give your goal a title first.", type="warning")
         return
     target = max(1, float(target_input.value or 100))
+    local_session = get_local_session()
     goal_service.create_goal(
-        team_id=_TEAM_ID,
+        team_id=local_session.team_id,
         title=title,
         description=(description_input.value or "").strip(),
         target_value=target,

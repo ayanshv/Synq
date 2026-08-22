@@ -4,6 +4,7 @@ import json
 from datetime import date
 
 from app.models.work_activity import WorkActivity
+from app.utils.helpers import local_today
 from app.services.integrations.base import Integration
 
 
@@ -19,7 +20,7 @@ class MockIntegration(Integration):
         activities = [
             WorkActivity(
                 user_id=user_id,
-                date=date.today(),
+                date=local_today(),
                 source="github",
                 activity_type="pull_request",
                 description="Opened pull request for the onboarding redesign",
@@ -27,7 +28,7 @@ class MockIntegration(Integration):
             ),
             WorkActivity(
                 user_id=user_id,
-                date=date.today(),
+                date=local_today(),
                 source="github",
                 activity_type="pull_request",
                 description="Merged authentication refactor",
@@ -35,7 +36,7 @@ class MockIntegration(Integration):
             ),
             WorkActivity(
                 user_id=user_id,
-                date=date.today(),
+                date=local_today(),
                 source="github",
                 activity_type="commit",
                 description="Committed code for billing integration tests",
@@ -43,7 +44,7 @@ class MockIntegration(Integration):
             ),
             WorkActivity(
                 user_id=user_id,
-                date=date.today(),
+                date=local_today(),
                 source="github",
                 activity_type="code_review",
                 description="Reviewed code for the API rate-limit changes",
@@ -51,7 +52,7 @@ class MockIntegration(Integration):
             ),
             WorkActivity(
                 user_id=user_id,
-                date=date.today(),
+                date=local_today(),
                 source="gmail",
                 activity_type="sent_email",
                 description="Sent project update about the launch timeline",
@@ -59,7 +60,7 @@ class MockIntegration(Integration):
             ),
             WorkActivity(
                 user_id=user_id,
-                date=date.today(),
+                date=local_today(),
                 source="gmail",
                 activity_type="received_email",
                 description="Received project email about launch readiness",

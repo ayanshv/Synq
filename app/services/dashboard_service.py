@@ -18,6 +18,7 @@ from app.models import (
     WorkUpdate,
 )
 from app.services.meeting_service import MeetingSuggestion, recommend_meeting
+from app.utils.helpers import local_today
 
 
 @dataclass
@@ -68,7 +69,8 @@ def get_dashboard_data(team_id: int) -> DashboardData:
             .where(WorkActivity.user_id.in_(list(names)))
             .order_by(WorkActivity.date.desc(), WorkActivity.created_at.desc())
         ).all()
-        week_start = date.today() - timedelta(days=date.today().weekday())
+        today = local_today()
+        week_start = today - timedelta(days=today.weekday())
         completed = [goal for goal in goals if goal.progress >= 100 or goal.status == "completed"]
         team = session.get(Team, team_id)
         if team is None:

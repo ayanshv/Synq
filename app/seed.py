@@ -21,6 +21,7 @@ from app.models import (
     WorkActivity,
     WorkUpdate,
 )
+from app.utils.helpers import local_today
 
 
 def run_seed() -> None:
@@ -87,7 +88,7 @@ def _create_goals(session) -> None:
 
 def _create_activities(session) -> None:
     user_ids = session.info["user_ids"]
-    today = date.today()
+    today = local_today()
     activities = [
         WorkActivity(
             user_id=user_ids["Anya Kapoor"], date=today,
@@ -126,7 +127,7 @@ def _create_activities(session) -> None:
 def _create_updates(session) -> None:
     team_id = session.info["team_id"]
     user_ids = session.info["user_ids"]
-    today = date.today()
+    today = local_today()
     yesterday = today - timedelta(days=1)
 
     updates = [
@@ -162,7 +163,7 @@ def _create_recommendation(session) -> None:
     team_id = session.info["team_id"]
     rec = MeetingRecommendation(
         team_id=team_id,
-        date=date.today(),
+        date=local_today(),
         recommendation="async",
         reason="Team is on track. One blocker reported but not blocking others.",
         confidence=0.82,

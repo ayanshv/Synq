@@ -13,6 +13,8 @@ import datetime
 
 from sqlmodel import Field, SQLModel
 
+from app.utils.helpers import local_today
+
 
 def _now() -> datetime.datetime:
     return datetime.datetime.now(datetime.timezone.utc)
@@ -21,7 +23,7 @@ def _now() -> datetime.datetime:
 class WorkActivity(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     user_id: int = Field(foreign_key="user.id")
-    date: datetime.date = Field(default_factory=datetime.date.today)
+    date: datetime.date = Field(default_factory=local_today)
 
     # Where the activity came from: "github", "linear", "manual", etc.
     source: str = Field(default="manual", index=True)
