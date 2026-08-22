@@ -9,7 +9,7 @@ recommendation.
 from nicegui import ui
 
 from app.ui.layout import (
-    page_frame, display_heading, eyebrow, body_large,
+    page_frame, body_large,
     primary_button, secondary_button, badge, divider,
 )
 
@@ -23,8 +23,12 @@ def render() -> None:
 def _hero() -> None:
     """Oversized centered hero with the headline, subheadline, and CTAs."""
     with ui.element("section").classes("synq-hero"):
-        eyebrow("Async updates for software teams")
-        display_heading("Fewer meetings. Better work.")
+        with ui.element("div").classes("synq-hero-badge"):
+            ui.element("span").classes("synq-hero-badge-dot")
+            ui.label("Async updates for software teams")
+        ui.html(
+            'Fewer meetings. <span class="synq-em">Better work.</span>'
+        ).classes("synq-display")
         body_large(
             "Your team's work speaks for itself. Turn daily progress into "
             "clear async updates, shared goals, and meetings that actually matter."
