@@ -29,10 +29,10 @@ _THEME_CSS = """
     --synq-ink: #1a1a1c;           /* near-black primary text */
     --synq-ink-2: #57575e;         /* muted gray secondary text */
     --synq-ink-3: #97959c;         /* tertiary / placeholder text */
-    --synq-accent: #43648f;        /* restrained slate-blue accent */
-    --synq-accent-strong: #375580;
-    --synq-accent-soft: #edf1f7;   /* very light blue tint */
-    --synq-accent-line: rgba(67, 100, 143, 0.16);
+    --synq-accent: #084459;        /* deep teal accent */
+    --synq-accent-strong: #063343;
+    --synq-accent-soft: #e6eef1;   /* very light teal tint */
+    --synq-accent-line: rgba(8, 68, 89, 0.16);
     --synq-success: #557f64;
     --synq-warning: #b3823c;
     --synq-error: #a95645;
@@ -50,7 +50,7 @@ _THEME_CSS = """
 /* Page background + base typography. */
 .synq-page {
     background-color: var(--synq-bg);
-    background-image: radial-gradient(120% 60% at 50% -12%, rgba(67, 100, 143, 0.05), transparent 60%);
+    background-image: radial-gradient(120% 60% at 50% -12%, rgba(8, 68, 89, 0.05), transparent 60%);
     background-repeat: no-repeat;
     color: var(--synq-ink);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
@@ -308,11 +308,11 @@ _THEME_CSS = """
 }
 .synq-btn:active { transform: translateY(0); }
 .synq-btn-primary {
-    background: var(--synq-ink);
+    background: var(--synq-accent);
     color: #fffdfb;
 }
 .synq-btn-primary:hover {
-    background: #2c2c30;
+    background: var(--synq-accent-strong);
     transform: translateY(-1px);
     box-shadow: var(--synq-shadow-sm);
 }
