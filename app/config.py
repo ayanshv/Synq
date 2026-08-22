@@ -28,7 +28,7 @@ class Settings:
     database_url: str = os.getenv("DATABASE_URL", "sqlite:///./synq.db")
 
     # Placeholder for future AI integration. Empty string means "not configured".
-    openai_api_key: str = os.getenv("OPENAI_API_KEY", "")
+    gemini_api_key: str = os.getenv("GEMINI_API_KEY", "")
 
     # Placeholder for future OAuth integrations.
     github_client_id: str = os.getenv("GITHUB_CLIENT_ID", "")
