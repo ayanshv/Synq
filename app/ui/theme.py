@@ -244,6 +244,24 @@ _THEME_CSS = """
 .synq-goal-details { display: flex; gap: 18px; flex-wrap: wrap; padding-top: 15px; border-top: 1px solid var(--synq-border); }
 .synq-goal-form { display: flex; flex-direction: column; gap: 14px; max-width: 720px; }
 .synq-goal-dialog { width: min(560px, calc(100vw - 32px)); display: flex; flex-direction: column; gap: 14px; padding: 28px; }
+.synq-settings-card { display: flex; flex-direction: column; gap: 0; }
+.synq-settings-row { padding: 15px 0; border-bottom: 1px solid var(--synq-border); }
+.synq-settings-row:first-child { padding-top: 0; }
+.synq-settings-row:last-child { padding-bottom: 0; border-bottom: 0; }
+.synq-settings-name { color: var(--synq-ink); font-size: 1rem; font-weight: 600; }
+.synq-settings-toggle { padding: 13px 0; }
+.synq-settings-toggle:first-child { padding-top: 0; }
+.synq-settings-toggle + .synq-settings-toggle { border-top: 1px solid var(--synq-border); }
+.synq-exclusion-list { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); column-gap: 28px; margin-top: 10px; }
+.synq-settings-checkbox { grid-column: 1; }
+.synq-settings-checkbox-help { grid-column: 2; align-self: center; }
+.synq-review-settings { display: flex; flex-direction: column; gap: 22px; }
+.synq-review-statement { padding: 20px; border-left: 3px solid var(--synq-success); background: rgba(91, 140, 106, 0.08); }
+.synq-review-statement-text { color: var(--synq-ink); font-family: 'Fraunces', Georgia, serif; font-size: 1.35rem; line-height: 1.3; }
+.synq-visibility-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0; }
+.synq-visibility-item { padding: 18px 22px; }
+.synq-visibility-item:nth-child(odd) { border-right: 1px solid var(--synq-border); }
+.synq-visibility-item:nth-child(-n+2) { border-bottom: 1px solid var(--synq-border); }
 
 /* ---- Buttons ---- */
 .synq-btn {
@@ -530,6 +548,10 @@ _THEME_CSS = """
     .synq-user-menu { margin-left: 0; }
     .synq-goals-list { grid-template-columns: 1fr; }
     .synq-goal-card-top { flex-direction: column; }
+    .synq-exclusion-list, .synq-visibility-grid { grid-template-columns: 1fr; }
+    .synq-settings-checkbox-help { grid-column: 1; padding-left: 32px; margin-top: -7px; margin-bottom: 6px; }
+    .synq-visibility-item:nth-child(odd) { border-right: 0; }
+    .synq-visibility-item:nth-child(-n+3) { border-bottom: 1px solid var(--synq-border); }
 }
 </style>
 """
