@@ -21,31 +21,32 @@ _THEME_CSS = """
 <style>
 :root {
     /* Color palette - intentionally limited. */
-    --synq-bg: #f7f6f3;            /* warm off-white page background */
-    --synq-surface: #fffefb;       /* card / panel surface */
-    --synq-surface-2: #f1efea;     /* subtle raised surface */
-    --synq-border: #e7e4dd;        /* subtle warm border */
-    --synq-border-strong: #d8d4cb;
-    --synq-ink: #1c1c1e;           /* near-black primary text */
-    --synq-ink-2: #5c5c63;          /* muted gray secondary text */
-    --synq-ink-3: #9a9aa1;          /* tertiary / placeholder text */
-    --synq-accent: #4a6fa5;         /* soft blue accent */
-    --synq-accent-soft: #eaf1f9;    /* very light blue tint */
-    --synq-accent-grad: linear-gradient(135deg, #eef4fb 0%, #f7f6f3 70%);
+    --synq-bg: #f6f7f8;            /* cool off-white page background */
+    --synq-surface: #ffffff;       /* card / panel surface */
+    --synq-surface-2: #eef1f3;     /* subtle raised surface */
+    --synq-border: #e2e6e9;        /* subtle neutral border */
+    --synq-border-strong: #cbd2d8;
+    --synq-ink: #172027;           /* near-black primary text */
+    --synq-ink-2: #5c6870;         /* muted gray secondary text */
+    --synq-ink-3: #89949b;         /* tertiary / placeholder text */
+    --synq-accent: #3f6f8f;        /* restrained blue accent */
+    --synq-accent-soft: #e8f0f4;   /* very light blue tint */
+    --synq-accent-grad: linear-gradient(135deg, #edf4f7 0%, #ffffff 100%);
     --synq-success: #5b8c6a;
     --synq-warning: #c08a3e;
     --synq-error: #b05c4a;
-    --synq-shadow: 0 1px 2px rgba(28, 28, 30, 0.04), 0 4px 16px rgba(28, 28, 30, 0.04);
-    --synq-shadow-sm: 0 1px 2px rgba(28, 28, 30, 0.05);
-    --synq-radius: 16px;
-    --synq-radius-sm: 10px;
+    --synq-shadow: 0 1px 2px rgba(23, 32, 39, 0.04), 0 8px 24px rgba(23, 32, 39, 0.045);
+    --synq-shadow-sm: 0 1px 2px rgba(23, 32, 39, 0.06);
+    --synq-radius: 12px;
+    --synq-radius-sm: 8px;
     --synq-radius-pill: 999px;
 }
 
 /* Page background + base typography. */
 .synq-page {
     background-color: var(--synq-bg);
-    background-image: radial-gradient(circle at 18% -10%, rgba(74, 111, 165, 0.06), transparent 45%);
+    background-image: linear-gradient(rgba(255, 255, 255, 0.26) 1px, transparent 1px);
+    background-size: 100% 40px;
     color: var(--synq-ink);
     font-family: 'Inter', system-ui, -apple-system, sans-serif;
     min-height: 100vh;
@@ -57,7 +58,7 @@ _THEME_CSS = """
     font-weight: 500;
     font-size: clamp(2.4rem, 5vw, 3.6rem);
     line-height: 1.08;
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
     color: var(--synq-ink);
     margin: 0;
 }
@@ -66,7 +67,7 @@ _THEME_CSS = """
     font-weight: 500;
     font-size: clamp(1.9rem, 3.5vw, 2.6rem);
     line-height: 1.12;
-    letter-spacing: -0.015em;
+    letter-spacing: 0;
     color: var(--synq-ink);
     margin: 0;
 }
@@ -75,7 +76,7 @@ _THEME_CSS = """
     font-weight: 500;
     font-size: 1.5rem;
     line-height: 1.2;
-    letter-spacing: -0.01em;
+    letter-spacing: 0;
     color: var(--synq-ink);
     margin: 0;
 }
@@ -120,9 +121,9 @@ _THEME_CSS = """
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 18px 0;
+    padding: 20px 0 16px;
     background: transparent;
-    border: none;
+    border-bottom: 1px solid var(--synq-border);
 }
 .synq-nav-brand {
     font-family: 'Fraunces', Georgia, serif;
@@ -150,14 +151,14 @@ _THEME_CSS = """
 .synq-nav-pill {
     display: inline-flex;
     align-items: center;
-    padding: 7px 15px;
-    border-radius: var(--synq-radius-pill);
+    padding: 8px 13px;
+    border-radius: var(--synq-radius-sm);
     font-size: 0.9rem;
     font-weight: 500;
     color: var(--synq-ink-2);
     text-decoration: none;
     border: 1px solid transparent;
-    transition: all 0.18s ease;
+    transition: color 0.18s ease, background 0.18s ease, border-color 0.18s ease;
 }
 .synq-nav-pill:hover {
     color: var(--synq-ink);
@@ -251,8 +252,9 @@ _THEME_CSS = """
     align-items: center;
     justify-content: center;
     gap: 8px;
-    padding: 11px 22px;
-    border-radius: var(--synq-radius-pill);
+    padding: 10px 18px;
+    min-height: 42px;
+    border-radius: var(--synq-radius-sm);
     font-family: 'Inter', sans-serif;
     font-size: 0.95rem;
     font-weight: 600;
@@ -261,6 +263,14 @@ _THEME_CSS = """
     transition: all 0.18s ease;
     text-decoration: none;
     line-height: 1;
+    box-shadow: none;
+}
+.synq-btn:focus-visible,
+.synq-nav-pill:focus-visible,
+.synq-remove-button:focus-visible,
+.synq-goal-edit:focus-visible {
+    outline: 2px solid var(--synq-accent);
+    outline-offset: 2px;
 }
 .synq-btn-primary {
     background: var(--synq-ink);
@@ -295,6 +305,11 @@ _THEME_CSS = """
     border-radius: var(--synq-radius);
     box-shadow: var(--synq-shadow);
     padding: 24px;
+    transition: border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.synq-card:hover {
+    border-color: var(--synq-border-strong);
+    box-shadow: 0 1px 2px rgba(23, 32, 39, 0.05), 0 10px 28px rgba(23, 32, 39, 0.055);
 }
 .synq-panel {
     background: var(--synq-surface);
@@ -316,6 +331,11 @@ _THEME_CSS = """
     border-radius: var(--synq-radius);
     padding: 22px 24px;
     box-shadow: var(--synq-shadow-sm);
+    transition: border-color 0.18s ease, transform 0.18s ease;
+}
+.synq-stat:hover {
+    border-color: var(--synq-border-strong);
+    transform: translateY(-1px);
 }
 .synq-stat-value {
     font-family: 'Fraunces', Georgia, serif;
@@ -324,6 +344,22 @@ _THEME_CSS = """
     line-height: 1;
     color: var(--synq-ink);
     margin: 6px 0 0 0;
+}
+
+.synq-editor-field .q-field__control,
+.synq-goal-form .q-field__control,
+.synq-goal-dialog .q-field__control {
+    border-radius: var(--synq-radius-sm);
+}
+.synq-editor-field .q-field--outlined .q-field__control:before,
+.synq-goal-form .q-field--outlined .q-field__control:before,
+.synq-goal-dialog .q-field--outlined .q-field__control:before {
+    border-color: var(--synq-border-strong);
+}
+.synq-editor-field .q-field--outlined.q-field--focused .q-field__control:after,
+.synq-goal-form .q-field--outlined.q-field--focused .q-field__control:after,
+.synq-goal-dialog .q-field--outlined.q-field--focused .q-field__control:after {
+    border-color: var(--synq-accent);
 }
 .synq-stat-label {
     font-size: 0.8rem;
@@ -500,7 +536,7 @@ _THEME_CSS = """
 /* ---- Responsive ---- */
 .synq-container {
     width: 100%;
-    max-width: 1080px;
+    max-width: 1120px;
     margin: 0 auto;
     padding: 0 24px;
     box-sizing: border-box;
@@ -508,19 +544,24 @@ _THEME_CSS = """
 .synq-content {
     display: flex;
     flex-direction: column;
-    gap: 28px;
-    padding: 32px 0 64px 0;
+    gap: 36px;
+    padding: 44px 0 72px 0;
+    animation: synq-enter 0.35s ease-out both;
+}
+@keyframes synq-enter {
+    from { opacity: 0; transform: translateY(6px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 @media (max-width: 860px) {
     .synq-preview-body { grid-template-columns: 1fr; }
     .synq-dashboard-grid { grid-template-columns: 1fr; gap: 34px; }
 }
 @media (max-width: 640px) {
-    .synq-nav { padding: 14px 0; }
+    .synq-nav { padding: 14px 0 12px; align-items: flex-start; }
     .synq-container { padding: 0 16px; }
-    .synq-content { gap: 22px; padding: 24px 0 48px 0; }
+    .synq-content { gap: 28px; padding: 30px 0 48px 0; }
     .synq-card, .synq-panel, .synq-panel-accent { padding: 18px; }
-    .synq-nav-pill { padding: 6px 11px; font-size: 0.84rem; }
+    .synq-nav-pill { padding: 6px 9px; font-size: 0.82rem; }
     .synq-hero { padding: 32px 0 24px 0; gap: 18px; }
     .synq-preview { padding: 10px; }
     .synq-preview-card { padding: 14px; }
