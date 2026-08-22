@@ -7,6 +7,7 @@ and the shared layout/theme owns the visual language.
 from nicegui import ui
 
 from app.services.dashboard_service import DashboardData, get_dashboard_data
+from app.services.session_service import get_local_session
 from app.ui.layout import (
     badge,
     body,
@@ -19,11 +20,9 @@ from app.ui.layout import (
     stat_card,
 )
 
-_TEAM_ID = 1
-
-
 def render() -> None:
-    data = get_dashboard_data(_TEAM_ID)
+    local_session = get_local_session()
+    data = get_dashboard_data(local_session.team_id)
     with page_frame("Dashboard", active_path="/dashboard"):
         _intro()
         _team_progress(data)

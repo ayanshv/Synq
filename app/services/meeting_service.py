@@ -12,6 +12,7 @@ from sqlmodel import select
 
 from app.database import get_session
 from app.models import Goal, Team, User, WorkUpdate
+from app.utils.helpers import local_today
 
 
 @dataclass(frozen=True)
@@ -57,7 +58,7 @@ def recommend_meeting(team: Team) -> MeetingSuggestion:
         )
         goals = list(session.exec(select(Goal).where(Goal.team_id == team.id)))
 
-    recent_start = date.today() - timedelta(days=7)
+    recent_start = local_today() - timedelta(days=7)
     recent_updates = [update for update in updates if update.date >= recent_start]
     recent_members = {update.user_id for update in recent_updates}
     coverage = len(recent_members) / len(users) if users else 0

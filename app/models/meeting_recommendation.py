@@ -9,6 +9,8 @@ import datetime
 
 from sqlmodel import Field, SQLModel
 
+from app.utils.helpers import local_today
+
 
 def _now() -> datetime.datetime:
     return datetime.datetime.now(datetime.timezone.utc)
@@ -17,7 +19,7 @@ def _now() -> datetime.datetime:
 class MeetingRecommendation(SQLModel, table=True):
     id: int | None = Field(default=None, primary_key=True)
     team_id: int = Field(foreign_key="team.id")
-    date: datetime.date = Field(default_factory=datetime.date.today)
+    date: datetime.date = Field(default_factory=local_today)
 
     # "meet" or "async" - the headline recommendation.
     recommendation: str = Field(default="async")

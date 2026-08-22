@@ -1,0 +1,1 @@
+- [Local date handling](local-date-handling.md) — user-facing “today” boundaries must follow the configured local timezone, not container UTC.

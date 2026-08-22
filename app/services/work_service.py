@@ -6,6 +6,7 @@ from sqlmodel import select
 
 from app.database import get_session
 from app.models.work_activity import WorkActivity
+from app.utils.helpers import local_today
 
 
 def list_today_for_user(user_id: int) -> list[WorkActivity]:
@@ -14,7 +15,7 @@ def list_today_for_user(user_id: int) -> list[WorkActivity]:
         statement = (
             select(WorkActivity)
             .where(WorkActivity.user_id == user_id)
-            .where(WorkActivity.date == date.today())
+            .where(WorkActivity.date == local_today())
             .order_by(WorkActivity.created_at.desc())
         )
         return list(session.exec(statement))
